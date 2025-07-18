@@ -1,10 +1,11 @@
 # SQL_Retail_Sales
 ## Project overview
-**Project titile**: Retail Sales Analysis
-**Data Base** : `Retail_db`
+**Project titile**: Retail Sales Analysis <br>
+**Database** : `retail_sales`
 ## Objective
-1.**Set up a retail database** : Create a retail database and import sales data to the table.<br>
-2.**Data Cleaning**: Identify and remove null values if any exists in retail table.
+1. **Set up a retail database** : Create a retail database and import sales data to the table.
+2. **Data Cleaning**: Identify and remove null values if any exists in retail table.
+3. **Exploratory Data Analysis (EDA)**: Basic EDA is conducted to understand the sale data.
 ## Project structure
 ### 1.Database Setup
 - **Database creation**: The project starts by creating a database named `retail_sales`.
