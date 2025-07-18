@@ -93,4 +93,104 @@ SELECT category,
 FROM sales
 GROUP BY category;
 ```
+4. **Write a SQL query to find the average age of customers who purchased items from the 'Beauty' category**
+```sql
+ select  avg(age) as avg_age from sales 
+ where category = 'Beauty';
+```
+5. **Write a SQL query to find all transactions where the totals ale is greater than 1000**
+ ```sql
+   SELECT * from sales 
+ where total_sale >1000;
+```
+6.**Write a SQL query to find the total number of transactions made by each gender in each category**
+```sql
+SELECT category, 
+       gender, 
+       COUNT(*) AS total_transections
+FROM sales
+GROUP BY category, gender;
+```
+7. **Write a SQL query to calculate the average sale for each month. Find out best selling month in each year**
+```sql
+SELECT year, 
+       month, 
+       avg_sale
+FROM (
+    SELECT YEAR(sale_date) AS year,
+           MONTH(sale_date) AS month,
+           AVG(total_sale) AS avg_sale,
+           RANK() OVER (
+               PARTITION BY YEAR(sale_date)
+               ORDER BY AVG(total_sale) DESC
+           ) AS rnk_salary
+    FROM sales
+    GROUP BY YEAR(sale_date), MONTH(sale_date)
+    ORDER BY 1, 3 DESC
+) AS sub
+WHERE sub.rnk_salary = 1;
+```
+8. **Write a SQL query to find the top 5 customers based on the highest total sales**
+```sql
+-- using window function 
+SELECT sub.customer_id, 
+       sub.highest_sale
+FROM (
+    SELECT customer_id, 
+           SUM(total_sale) AS highest_sale,
+           RANK() OVER w AS rnk_sale
+    FROM sales
+    GROUP BY customer_id
+    WINDOW w AS (
+        ORDER BY SUM(total_sale) DESC
+    )
+) AS sub
+WHERE sub.rnk_sale BETWEEN 1 AND 5;
+
+
+-- using only aggregate function
+SELECT customer_id, sum(total_sale) as total_sale 
+from sales
+GROUP BY customer_id
+order by total_sale desc
+limit 5;
+```
+9. **Write a SQL query to find the number of unique customers who purchased items from each category**
+```sql
+SELECT category, 
+       COUNT(DISTINCT customer_id) AS numb_of_unique_customers
+FROM sales
+GROUP BY category;
+```
+10. **Write a SQL query to create each shift and number of orders (Example Morning <12, Afternoon Between 12 & 17, Evening >17)**
+```sql
+SELECT shift, 
+       COUNT(transactions_id) AS num_order
+FROM (
+    SELECT *, 
+           CASE 
+               WHEN HOUR(sale_time) <= 12 THEN 'Morning'
+               WHEN HOUR(sale_time) BETWEEN 13 AND 17 THEN 'Afternoon'
+               ELSE 'Evening'
+           END AS shift
+    FROM sales
+) AS sub
+GROUP BY shift;
+
+ 
+ -- with Common table expression (cte)
+ WITH cte AS (
+    SELECT *, 
+           CASE 
+               WHEN HOUR(sale_time) <= 12 THEN 'Morning'
+               WHEN HOUR(sale_time) BETWEEN 13 AND 17 THEN 'Afternoon'
+               ELSE 'Evening'
+           END AS shift
+    FROM sales
+)
+SELECT shift, 
+       COUNT(*) AS number_of_order
+FROM cte
+GROUP BY shift;
+```
 
