@@ -69,4 +69,16 @@ WHERE transactions_id IS NULL
    OR total_sale IS NULL;
 
 ```
+### 3. Exploratory Data Analysis & Findings
+The following SQL queries were developed to answer specific business questions:
+
+1. **Write a SQL query to retrieve all columns for sales made on '2022-11-05?**
+```sql
+SELECT COUNT(*)
+FROM sales
+WHERE sale_date = '2022-11-05';
+```
+2. **Write a SQL query to retrieve all transactions where the category is 'Clothing' and the quantity sold is more than 3 in the month of Nov-2022**
+```sql
+
 
