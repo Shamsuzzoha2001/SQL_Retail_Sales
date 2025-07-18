@@ -80,5 +80,17 @@ WHERE sale_date = '2022-11-05';
 ```
 2. **Write a SQL query to retrieve all transactions where the category is 'Clothing' and the quantity sold is more than 3 in the month of Nov-2022**
 ```sql
-
+SELECT *
+FROM sales
+WHERE category = 'Clothing'
+  AND quantity > 3
+  AND DATE_FORMAT(sale_date, '%Y-%m') = '2022-11';
+```
+3. **Write a SQL query to calculate the total sales for each category**
+```sql
+SELECT category, 
+       SUM(total_sale)
+FROM sales
+GROUP BY category;
+```
 
